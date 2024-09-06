@@ -4,7 +4,7 @@
         <input v-if="editStatus" type="time" v-model="editTime"
             class="border-gray-800 p-2 focus:outline-none bg-transparent border-none">
         <span v-else class="text-red-600 text-2xl font-bold">{{ fulltime }}</span>
-        <input v-if="editStatus" type="text" v-model="editValue" @keydown.enter="updateItem"
+        <input v-if="editStatus" type="text" v-model="editValue"
             class="border-b border-gray-300 p-2 focus:outline-none focus:border-gray-800 transition duration-300 ease-linear bg-transparent">
         <span v-else class="flex font-sans font-semibold">{{ test }}</span>
         <div class="flex gap-2.5">
@@ -24,7 +24,6 @@ import { ref, toRefs } from 'vue';
 const props = defineProps({ test: String, fulltime: String, index: Number })
 const emit = defineEmits(['delete-history', 'update-history'])
 const { test, fulltime } = toRefs(props);
-// const fulltime = ref('');
 const editStatus = ref(false);
 const editValue = ref(test.value);
 const editTime = ref(fulltime.value);
@@ -38,14 +37,13 @@ const updateEvent = () => {
 //更新內容
 const updateItem = () => {
     if (editValue.value.trim() && editTime.value.trim()) {
-        emit('update-history', { event: editValue.value.trim(), time: editTime.value.trim() });
+        emit('update-history', { id: props.index, event: editValue.value.trim(), time: editTime.value.trim() });
         editStatus.value = false;
     }
 }
 //刪除
 const deleteItem = () => {
-    console.log(props.index);
-
+    // console.log(props.index);
     emit('delete-history', props.index)
 }
 </script>
