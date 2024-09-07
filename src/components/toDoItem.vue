@@ -56,10 +56,10 @@ const deleteItem = () => {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     position: absolute;
-    top: 5%;
+    top: 25%;
     left: -5%;
     z-index: 2;
 }

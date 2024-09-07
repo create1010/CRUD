@@ -22,6 +22,9 @@
         <toDoItem v-for="item in filterHistory" :key="item.id" :test="item.event" :fulltime="item.time" :index="item.id"
             @delete-history="deleteItem" @update-history="updateItem" />
     </ul>
+    <div>
+
+    </div>
 </template>
 
 <script setup>
@@ -31,7 +34,6 @@ import toDoItem from '../components/toDoItem.vue'
 const test = ref('');
 const usertime = ref('');
 const usersearch = ref('');
-const filterHistory = ref([]);
 const history = ref([
     { id: 1, event: '起床', time: '07:00' },
     { id: 2, event: '晨間運動', time: '07:30' },
@@ -40,6 +42,7 @@ const history = ref([
     { id: 5, event: '工作', time: '10:00' },
     { id: 6, event: '休息', time: '11:00' }
 ]);
+const filterHistory = ref([...history.value]);
 //增
 const addItem = () => {
     if (test.value.trim()) {
@@ -56,24 +59,27 @@ const deleteItem = (selectID) => {
     const confirm = window.confirm('確定要刪除該筆資料?');
     if (confirm) {
         history.value = history.value.filter(item => item.id !== selectID);
+        isSearch();
     }
-    isSearch();
 }
 //改
 const updateItem = (updateItem) => {
     const selectItem = history.value.findIndex(item => item.id === updateItem.id)
-    // console.log(selectItem);
     if (selectItem !== -1) {
-        history.value[selectItem] = updateItem
+        history.value[selectItem] = updateItem;
+        usersearch.value = '';
+        history.value.sort((a, b) => a.time.localeCompare(b.time));
+        isSearch();
     }
-    isSearch();
 }
 //查
 const isSearch = () => {
     if (usersearch.value.trim()) {
-        filterHistory.value = history.value.filter(item => item.event.includes(usersearch.value.trim()));
+        filterHistory.value = history.value.filter(item => item.event.includes(usersearch.value.trim()))
+            .sort((a, b) => a.time.localeCompare(b.time));
+
     } else {
-        filterHistory.value = [...history.value];
+        filterHistory.value = [...history.value].sort((a, b) => a.time.localeCompare(b.time));
     }
 }
 //初始化預設資訊
