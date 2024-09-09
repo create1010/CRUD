@@ -19,32 +19,32 @@
 </template>
 
 <script setup>
-import { ref, toRefs } from 'vue';
+import { ref, toRefs, computed } from 'vue';
 
-const props = defineProps({ test: String, fulltime: String, index: Number })
-const emit = defineEmits(['delete-history', 'update-history'])
-const { test, fulltime } = toRefs(props);
-const editStatus = ref(false);
+const props = defineProps({ test: String, fulltime: String, index: Number, editItem: Number })
+const emit = defineEmits(['delete-history', 'update-history', 'update-editing-status'])
+const { test, fulltime, index, editItem } = toRefs(props);
 const editValue = ref(test.value);
 const editTime = ref(fulltime.value);
+const editStatus = computed(() => editItem.value === index.value);
 
 //編輯狀態
 const updateEvent = () => {
-    editStatus.value = true;
+    emit('update-editing-status', index.value)
     editValue.value = test.value;
     editTime.value = fulltime.value;
 }
 //更新內容
 const updateItem = () => {
     if (editValue.value.trim() && editTime.value.trim()) {
-        emit('update-history', { id: props.index, event: editValue.value.trim(), time: editTime.value.trim() });
-        editStatus.value = false;
+        emit('update-history', { id: index.value, event: editValue.value.trim(), time: editTime.value.trim() });
+        emit('update-editing-status', null);
     }
 }
 //刪除
 const deleteItem = () => {
-    // console.log(props.index);
-    emit('delete-history', props.index)
+    // console.log(index.value);
+    emit('delete-history', index.value)
 }
 </script>
 

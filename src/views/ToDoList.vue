@@ -20,20 +20,19 @@
     </div>
     <ul class="list-none">
         <toDoItem v-for="item in filterHistory" :key="item.id" :test="item.event" :fulltime="item.time" :index="item.id"
-            @delete-history="deleteItem" @update-history="updateItem" />
+            :edit-item="editItem" @update-editing-status="updateEditingStatus" @delete-history="deleteItem"
+            @update-history="updateItem" />
     </ul>
-    <div>
-
-    </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import toDoItem from '../components/toDoItem.vue'
+import toDoItem from '../components/toDoItem.vue';
 
 const test = ref('');
 const usertime = ref('');
 const usersearch = ref('');
+const editItem = ref(null);
 const history = ref([
     { id: 1, event: '起床', time: '07:00' },
     { id: 2, event: '晨間運動', time: '07:30' },
@@ -80,8 +79,15 @@ const isSearch = () => {
 
     } else {
         filterHistory.value = [...history.value].sort((a, b) => a.time.localeCompare(b.time));
+        editItem.value = null;
     }
 }
+
+//處理編輯更新
+const updateEditingStatus = (id) => {
+    editItem.value = id !== null ? id : null;
+}
+
 //初始化預設資訊
 isSearch();
 </script>
