@@ -58,7 +58,13 @@ const deleteItem = (selectID) => {
     const confirm = window.confirm('確定要刪除該筆資料?');
     if (confirm) {
         history.value = history.value.filter(item => item.id !== selectID);
-        isSearch();
+        //檢測返回結果是否為空
+        if (filterHistory.value.length === 1 && filterHistory.value[0].id === selectID) {
+            filterHistory.value = [...history.value].sort((a, b) => a.time.localeCompare(b.time));
+            usersearch.value = '';
+        } else {
+            isSearch();
+        }
     }
 }
 //改

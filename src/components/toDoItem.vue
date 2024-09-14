@@ -1,6 +1,6 @@
 <template>
     <li
-        class="w-[70%] flex justify-between items-center p-5 mx-auto mb-2.5 rounded-lg bg-slate-200 box-border relative listpic">
+        class="w-[70%] flex flex-col justify-center items-center p-2.5 gap-2.5 md:flex-row md:justify-between md:p-5 mx-auto mb-2.5 rounded-lg bg-slate-200 box-border relative listpic">
         <input v-if="editStatus" type="time" v-model="editTime"
             class="border-gray-800 p-2 focus:outline-none bg-transparent border-none">
         <span v-else class="text-red-600 text-2xl font-bold">{{ fulltime }}</span>
@@ -59,8 +59,15 @@ const deleteItem = () => {
     width: 40px;
     height: 40px;
     position: absolute;
-    top: 25%;
-    left: -5%;
+    top: 0;
+    left: 0;
     z-index: 2;
+}
+
+@media screen and (min-width:768px) {
+    .listpic::before {
+        top: 20%;
+        left: -7%;
+    }
 }
 </style>
